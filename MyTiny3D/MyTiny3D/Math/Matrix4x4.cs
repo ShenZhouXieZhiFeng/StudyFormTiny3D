@@ -18,9 +18,9 @@ namespace MyTiny3D.Math
                          float m41, float m42, float m43, float m44)
         {
             _m[0, 0] = m11; _m[0, 1] = m12; _m[0, 2] = m13; _m[0, 3] = m14;
-            _m[1, 0] = m21; _m[1, 2] = m22; _m[1, 2] = m23; _m[1, 3] = m24;
-            _m[2, 0] = m31; _m[2, 2] = m32; _m[2, 2] = m33; _m[2, 3] = m34;
-            _m[3, 0] = m41; _m[3, 2] = m42; _m[3, 2] = m43; _m[3, 3] = m44;
+            _m[1, 0] = m21; _m[1, 1] = m22; _m[1, 2] = m23; _m[1, 3] = m24;
+            _m[2, 0] = m31; _m[2, 1] = m32; _m[2, 2] = m33; _m[2, 3] = m34;
+            _m[3, 0] = m41; _m[3, 1] = m42; _m[3, 2] = m43; _m[3, 3] = m44;
         }
 
         public float this[int i, int j] {
@@ -42,19 +42,21 @@ namespace MyTiny3D.Math
         /// <param name="fm"></param>
         /// <param name="sm"></param>
         /// <returns></returns>
-        public static Matrix4x4 operator *(Matrix4x4 fm, Matrix4x4 sm) {
-            Matrix4x4 m = new Matrix4x4();
-            m.SetZero();
+        public static Matrix4x4 operator *(Matrix4x4 lhs, Matrix4x4 rhs)
+        {
+            Matrix4x4 nm = new Matrix4x4();
+            nm.SetZero();
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    for (int k = 0; k < 4; k++) {
-                        m[i, j] += fm[i, k] * sm[k, j];
+                    for (int k = 0; k < 4; k++)
+                    {
+                        nm._m[i, j] += lhs._m[i, k] * rhs._m[k, j];
                     }
                 }
             }
-            return m;
+            return nm;
         }
 
         /// <summary>

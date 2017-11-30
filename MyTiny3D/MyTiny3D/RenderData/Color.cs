@@ -29,6 +29,8 @@ namespace MyTiny3D.RenderData
             set { _r = MathUntil.Range(value, 0, 1); }
         }
 
+        public Color() { }
+
         public Color(float r, float g, float b) {
             this.r = r;
             this.g = g;
@@ -41,11 +43,56 @@ namespace MyTiny3D.RenderData
             this.b = c.B / 255;
         }
 
-        public System.Drawing.Color TransformToSystemColor() {
+        /// <summary>
+        /// 转换成系统颜色
+        /// </summary>
+        /// <returns></returns>
+        public System.Drawing.Color TransFormToSystemColor() {
             float r = this.r * 255;
             float g = this.g * 255;
             float b = this.b * 255;
             return System.Drawing.Color.FromArgb((int)r, (int)g, (int)b);
         }
+
+        /// <summary>
+        /// 颜色乘法，调制
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static Color operator *(Color a, Color b) {
+            Color c = new Color();
+            c.r = a.r * b.r;
+            c.g = a.g * b.g;
+            c.b = a.b * b.b;
+            return c;
+        }
+
+        public static Color operator *(float a, Color b)
+        {
+            Color c = new Color();
+            c.r = a * b.r;
+            c.g = a * b.g;
+            c.b = a * b.b;
+            return c;
+        }
+        public static Color operator *(Color a, float b)
+        {
+            Color c = new Color();
+            c.r = a.r * b;
+            c.g = a.g * b;
+            c.b = a.b * b;
+            return c;
+        }
+
+        public static Color operator +(Color a, Color b)
+        {
+            Color c = new Color();
+            c.r = a.r + b.r;
+            c.g = a.g + b.g;
+            c.b = a.b + b.b;
+            return c;
+        }
+
     }
 }

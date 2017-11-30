@@ -48,12 +48,19 @@
     </Compile>
     <Compile Include="Math\MathUntil.cs" />
     <Compile Include="Math\Matrix4x4.cs" />
+    <Compile Include="Math\Point2D.cs" />
     <Compile Include="Math\Vertex3D.cs" />
+    <Compile Include="RenderData\Camera.cs" />
     <Compile Include="RenderData\Color.cs" />
+    <Compile Include="RenderData\Enums.cs" />
+    <Compile Include="RenderData\Light.cs" />
+    <Compile Include="RenderData\Material.cs" />
     <Compile Include="RenderData\Vertex.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RenderData\Mesh.cs" />
+    <Compile Include="Test\CubeTestData.cs" />
+    <Compile Include="Test\QuadTestData.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -77,7 +84,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Test\" />
     <Folder Include="Texture\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
