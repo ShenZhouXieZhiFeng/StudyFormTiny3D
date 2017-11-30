@@ -1,6 +1,6 @@
 ﻿namespace MyTiny3D
 {
-    partial class Form1
+    partial class SoftRendererDemo
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -34,9 +34,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(581, 435);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(784, 562);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximumSize = new System.Drawing.Size(800, 600);
+            this.MinimumSize = new System.Drawing.Size(800, 600);
+            this.Name = "StoneSoftRenderer";
+            this.Text = "StoneSoftRenderer";
             this.ResumeLayout(false);
 
         }
