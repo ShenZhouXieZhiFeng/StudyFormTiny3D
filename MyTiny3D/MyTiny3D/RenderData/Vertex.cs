@@ -8,7 +8,7 @@ namespace MyTiny3D.RenderData
     /// <summary>
     /// 顶点信息
     /// </summary>
-    class Vertex
+    public struct Vertex
     {
         //顶点位置
         public Vector3D point;
@@ -24,7 +24,6 @@ namespace MyTiny3D.RenderData
         //1/z，用于顶点信息的透视校正
         public float onePerZ;
 
-        public Vertex() { }
         /// <summary>
         /// 定义一个顶点所需的所有信息
         /// </summary>

@@ -8,7 +8,7 @@ namespace MyTiny3D.RenderData
     /// <summary>
     /// 相机
     /// </summary>
-    class Camera
+    public struct Camera
     {
         /// <summary>
         /// 相机坐标

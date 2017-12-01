@@ -8,7 +8,7 @@ namespace MyTiny3D.RenderData
     /// <summary>
     /// 光照
     /// </summary>
-    class Light
+    public struct Light
     {
         /// <summary>
         /// 灯光时间坐标

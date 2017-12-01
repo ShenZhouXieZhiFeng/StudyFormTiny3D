@@ -7,32 +7,35 @@ namespace MyTiny3D.Math
     /// <summary>
     /// 向量类
     /// </summary>
-    class Vector3D
+    public struct Vector3D
     {
         public float x;
         public float y;
         public float z;
         public float w;
 
-        public Vector3D() { }
-        public Vector3D(float _x, float _y, float _z, float _w) {
-            x = _x;
-            y = _y;
-            z = _z;
-            w = _w;
+        public Vector3D(float x, float y, float z, float w)
+        {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.w = w;
         }
-        public Vector3D(float _x, float _y, float _z) {
-            x = _x;
-            y = _y;
-            z = _z;
-            w = 0;
+
+        public Vector3D(float x, float y, float z)
+        {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.w = 0;
         }
 
         /// <summary>
         /// 向量长度
         /// </summary>
         public float Length {
-            get {
+            get
+            {
                 float sq = x * x + y * y + z * z;
                 return (float)System.Math.Sqrt(sq);
             }
@@ -44,53 +47,53 @@ namespace MyTiny3D.Math
         /// <returns></returns>
         public Vector3D Normalize() {
             float length = Length;
-            if (length == 0)
+            if (length != 0)
             {
-                return this;
+                float s = 1 / length;
+                x *= s;
+                y *= s;
+                z *= s;
             }
-            float oneOverLen = 1 / length;
-            return new Vector3D(x * oneOverLen, y * oneOverLen, z * oneOverLen);
+            return this;
         }
 
         #region 重载运算符
-        public static Vector3D operator -(Vector3D fv,Vector3D sv) {
+        public static Vector3D operator -(Vector3D lhs, Vector3D rhs) {
             Vector3D v = new Vector3D();
-            v.x = fv.x - sv.x;
-            v.y = fv.y - sv.y;
-            v.z = fv.z - sv.z;
+            v.x = lhs.x - rhs.x;
+            v.y = lhs.y - rhs.y;
+            v.z = lhs.z - rhs.z;
             v.w = 0;
             return v;
         }
 
-        public static Vector3D operator *(Vector3D fv, Matrix4x4 sm) {
+        public static Vector3D operator *(Vector3D lhs, Matrix4x4 rhs) {
             Vector3D v = new Vector3D();
-            v.x = fv.x * sm[0, 0] + fv.y * sm[1, 0] + fv.z * sm[2, 0] + fv.w * sm[3, 0];
-            v.y = fv.x * sm[0, 1] + fv.y * sm[1, 1] + fv.z * sm[2, 1] + fv.w * sm[3, 1];
-            v.z = fv.x * sm[0, 2] + fv.y * sm[1, 2] + fv.z * sm[2, 2] + fv.w * sm[3, 2];
-            v.w = fv.x * sm[0, 3] + fv.y * sm[1, 3] + fv.z * sm[2, 3] + fv.w * sm[3, 3];
+            v.x = lhs.x * rhs[0, 0] + lhs.y * rhs[1, 0] + lhs.z * rhs[2, 0] + lhs.w * rhs[3, 0];
+            v.y = lhs.x * rhs[0, 1] + lhs.y * rhs[1, 1] + lhs.z * rhs[2, 1] + lhs.w * rhs[3, 1];
+            v.z = lhs.x * rhs[0, 2] + lhs.y * rhs[1, 2] + lhs.z * rhs[2, 2] + lhs.w * rhs[3, 2];
+            v.w = lhs.x * rhs[0, 3] + lhs.y * rhs[1, 3] + lhs.z * rhs[2, 3] + lhs.w * rhs[3, 3];
             return v;
         }
 
-        public static Vector3D operator +(Vector3D fv, Vector3D sv) {
+        public static Vector3D operator +(Vector3D lhs, Vector3D rhs) {
             Vector3D v = new Vector3D();
-            v.x = fv.x + sv.x;
-            v.y = fv.y + sv.y;
-            v.z = fv.z + sv.z;
-            v.w = fv.w + sv.w;
-            return v;
-        }
-
-        public static float Dot(Vector3D fv, Vector3D sv) {
-            return fv.x * sv.x + fv.y * sv.y + fv.z * sv.z;  
-        }
-
-        public static Vector3D Cross(Vector3D fv, Vector3D sv) {
-            Vector3D v = new Vector3D();
-            v.x = fv.y * sv.z - fv.z * sv.y;
-            v.y = fv.z * sv.x - fv.x * sv.z;
-            v.z = fv.x * sv.y - fv.y * sv.x;
+            v.x = lhs.x + rhs.x;
+            v.y = lhs.y + rhs.y;
+            v.z = lhs.z + rhs.z;
             v.w = 0;
             return v;
+        }
+
+        public static float Dot(Vector3D lhs, Vector3D rhs) {
+            return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;
+        }
+
+        public static Vector3D Cross(Vector3D lhs, Vector3D rhs) {
+            float x = lhs.y * rhs.z - lhs.z * rhs.y;
+            float y = lhs.z * rhs.x - lhs.x * rhs.z;
+            float z = lhs.x * rhs.y - lhs.y * rhs.x;
+            return new Vector3D(x, y, z, 0);
         }
 
         #endregion

@@ -132,11 +132,17 @@ namespace MyTiny3D.Math
 
         public static float Lerp(float a, float b, float t) {
             if (t <= 0)
+            {
                 return a;
-            if (t >= 1)
+            }
+            else if (t >= 1)
+            {
                 return b;
-            return a + (b - a) * t;
-            //return b * t + (1 - t) * a;
+            }
+            else
+            {
+                return b * t + (1 - t) * a;
+            }
         }
 
         /// <summary>

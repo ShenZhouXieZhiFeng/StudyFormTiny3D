@@ -14,7 +14,10 @@ namespace MyTiny3D
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SoftRendererDemo());
+            //2d渲染
+            Application.Run(new TwoDRender());
+            //3d渲染
+            //Application.Run(new SoftRendererDemo());
         }
     }
 }

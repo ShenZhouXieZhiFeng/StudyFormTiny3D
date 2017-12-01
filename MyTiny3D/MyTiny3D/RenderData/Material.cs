@@ -7,7 +7,7 @@ namespace MyTiny3D.RenderData
     /// <summary>
     /// 材质
     /// </summary>
-    class Material
+    public struct Material
     {
         /// <summary>
         /// 自发光

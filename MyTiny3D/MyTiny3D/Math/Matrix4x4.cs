@@ -7,20 +7,23 @@ namespace MyTiny3D.Math
     /// <summary>
     /// 4x4矩阵
     /// </summary>
-    class Matrix4x4
+    public class Matrix4x4
     {
         private float[,] _m = new float[4,4];
 
         public Matrix4x4() { }
-        public Matrix4x4(float m11, float m12, float m13, float m14,
-                         float m21, float m22, float m23, float m24,
-                         float m31, float m32, float m33, float m34,
-                         float m41, float m42, float m43, float m44)
+        public Matrix4x4(float a1, float a2, float a3, float a4,
+            float b1, float b2, float b3, float b4,
+            float c1, float c2, float c3, float c4,
+            float d1, float d2, float d3, float d4)
         {
-            _m[0, 0] = m11; _m[0, 1] = m12; _m[0, 2] = m13; _m[0, 3] = m14;
-            _m[1, 0] = m21; _m[1, 1] = m22; _m[1, 2] = m23; _m[1, 3] = m24;
-            _m[2, 0] = m31; _m[2, 1] = m32; _m[2, 2] = m33; _m[2, 3] = m34;
-            _m[3, 0] = m41; _m[3, 1] = m42; _m[3, 2] = m43; _m[3, 3] = m44;
+            _m[0, 0] = a1; _m[0, 1] = a2; _m[0, 2] = a3; _m[0, 3] = a4;
+            //
+            _m[1, 0] = b1; _m[1, 1] = b2; _m[1, 2] = b3; _m[1, 3] = b4;
+            //
+            _m[2, 0] = c1; _m[2, 1] = c2; _m[2, 2] = c3; _m[2, 3] = c4;
+            //
+            _m[3, 0] = d1; _m[3, 1] = d2; _m[3, 2] = d3; _m[3, 3] = d4;
         }
 
         public float this[int i, int j] {
@@ -63,19 +66,26 @@ namespace MyTiny3D.Math
         /// 单位化矩阵
         /// </summary>
         public void Identity() {
-            for (int i = 0; i < 4; i++)
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    if (i == j)
-                    {
-                        _m[i, j] = 1;
-                    }
-                    else {
-                        _m[i, j] = 0;
-                    }
-                }
-            }
+            _m[0, 0] = 1; _m[0, 1] = 0; _m[0, 2] = 0; _m[0, 3] = 0;
+            //
+            _m[1, 0] = 0; _m[1, 1] = 1; _m[1, 2] = 0; _m[1, 3] = 0;
+            //
+            _m[2, 0] = 0; _m[2, 1] = 0; _m[2, 2] = 1; _m[2, 3] = 0;
+            //
+            _m[3, 0] = 0; _m[3, 1] = 0; _m[3, 2] = 0; _m[3, 3] = 1;
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    for (int j = 0; j < 4; j++)
+            //    {
+            //        if (i == j)
+            //        {
+            //            _m[i, j] = 1;
+            //        }
+            //        else {
+            //            _m[i, j] = 0;
+            //        }
+            //    }
+            //}
         }
 
         /// <summary>
@@ -84,15 +94,17 @@ namespace MyTiny3D.Math
         /// <returns></returns>
         public Matrix4x4 Transpose()
         {
-            Matrix4x4 m = new Matrix4x4();
             for (int i = 0; i < 4; i++)
             {
-                for (int j = 0; j < 4; j++)
+                for (int j = i; j < 4; j++)
                 {
-                    m[i, j] = _m[j, i];
+
+                    float temp = _m[i, j];
+                    _m[i, j] = _m[j, i];
+                    _m[j, i] = temp;
                 }
             }
-            return m;
+            return this;
         }
 
         /// <summary>

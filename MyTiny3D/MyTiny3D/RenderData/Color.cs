@@ -8,7 +8,7 @@ namespace MyTiny3D.RenderData
     /// <summary>
     /// 颜色（0-1）
     /// </summary>
-    class Color
+    public struct Color
     {
         float _r, _g, _b;
 
@@ -20,27 +20,27 @@ namespace MyTiny3D.RenderData
         public float g
         {
             get { return MathUntil.Range(_g, 0, 1); }
-            set { _r = MathUntil.Range(value, 0, 1); }
+            set { _g = MathUntil.Range(value, 0, 1); }
         }
 
         public float b
         {
             get { return MathUntil.Range(_b, 0, 1); }
-            set { _r = MathUntil.Range(value, 0, 1); }
+            set { _b = MathUntil.Range(value, 0, 1); }
         }
 
-        public Color() { }
-
-        public Color(float r, float g, float b) {
-            this.r = r;
-            this.g = g;
-            this.b = b;
+        public Color(float r, float g, float b)
+        {
+            this._r = MathUntil.Range(r, 0, 1);
+            this._g = MathUntil.Range(g, 0, 1);
+            this._b = MathUntil.Range(b, 0, 1);
         }
 
-        public Color(System.Drawing.Color c) {
-            this.r = c.R / 255;
-            this.g = c.G / 255;
-            this.b = c.B / 255;
+        public Color(System.Drawing.Color c)
+        {
+            this._r = MathUntil.Range((float)c.R / 255, 0, 1);
+            this._g = MathUntil.Range((float)c.G / 255, 0, 1);
+            this._b = MathUntil.Range((float)c.B / 255, 0, 1);
         }
 
         /// <summary>

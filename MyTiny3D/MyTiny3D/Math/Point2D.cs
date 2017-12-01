@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyTiny3D.Math
 {
-    class Point2D
+    public struct Point2D
     {
 
         public float x;

@@ -15,10 +15,10 @@ namespace MyTiny3D
     public partial class SoftRendererDemo : Form
     {
         private Bitmap _texture;//纹理
-        private Bitmap _frameBuffer;//缓冲
+        private Bitmap _frameBuff;//缓冲
         private Graphics _frameG1;//画笔1
         private Graphics _frameG2;//画笔2
-        private float[,] _zBuffer;//z缓冲，做深度测试
+        private float[,] _zBuff;//z缓冲，做深度测试
         private Mesh _mesh;
         private Light _light;
         private Camera _camera;
@@ -50,9 +50,9 @@ namespace MyTiny3D
             _lightMode = LightMode.OFF;
             _textureFilterMode = TextureFilterMode.Bilinear;
 
-            _frameBuffer = new Bitmap(MaximumSize.Width, MaximumSize.Height);
-            _frameG1 = Graphics.FromImage(_frameBuffer);
-            _zBuffer = new float[MaximumSize.Height, MaximumSize.Width];
+            _frameBuff = new Bitmap(this.MaximumSize.Width, this.MaximumSize.Height);
+            _frameG1 = Graphics.FromImage(_frameBuff);
+            _zBuff = new float[this.MaximumSize.Height, this.MaximumSize.Width];
             _ambientColor = new RenderData.Color(1, 1, 1);
 
             _mesh = new Mesh(CubeTestData.pointList, CubeTestData.indexs, CubeTestData.uvs, CubeTestData.vertColors, CubeTestData.norlmas, CubeTestData.mat);
@@ -81,12 +81,17 @@ namespace MyTiny3D
         private float rota = 0;//旋转
         private void Tick(object sender, ElapsedEventArgs e)
         {
-            lock (_frameBuffer) {
+            lock (_frameBuff) {
                 clearBuff();
-                //rota += 0.05f;
-                Matrix4x4 m = MathUntil.GetRotateX(rota) *
-                    MathUntil.GetRotateY(rota) * MathUntil.GetTranslate(0, 0, 10);
+                rota += 0.05f;
+                //获取旋转矩阵 
+                Matrix4x4 rotaX = MathUntil.GetRotateX(rota);
+                Matrix4x4 rotaY = MathUntil.GetRotateY(rota);
+                Matrix4x4 translate = MathUntil.GetTranslate(0, 0, 10);
+                Matrix4x4 m = rotaX * rotaY * translate;
+                //计算相机视矩阵
                 Matrix4x4 v = MathUntil.GetView(_camera.pos, _camera.lookAt, _camera.up);
+                //投影矩阵
                 Matrix4x4 p = MathUntil.GetProjection(_camera.fov, _camera.aspect, _camera.zn, _camera.zf);
                 Draw(m,v,p);
 
@@ -95,7 +100,7 @@ namespace MyTiny3D
                 }
 
                 _frameG2.Clear(System.Drawing.Color.Black);
-                _frameG2.DrawImage(_frameBuffer, 0, 0);
+                _frameG2.DrawImage(_frameBuff, 0, 0);
             }
         }
 
@@ -133,11 +138,8 @@ namespace MyTiny3D
             SetProjectionTransform(p, ref p2);
             SetProjectionTransform(p, ref p3);
 
+            //Console.WriteLine(p1.point.x + "," + p1.point.y + "," + p1.point.z + "," + p1.point.w);
             //裁剪
-            //if (!Clip(p1) || !Clip(p2) || !Clip(p3))
-            //{
-            //    return;
-            //}
             if (Clip(p1) == false || Clip(p2) == false || Clip(p3) == false)
             {
                 return;
@@ -403,10 +405,10 @@ namespace MyTiny3D
                     }
                     //1/z’与x’和y'是线性关系的
                     float onePreZ = MathUntil.Lerp(left.onePerZ, right.onePerZ, lerpFactor);
-                    if (onePreZ >= _zBuffer[yIndex, xIndex])//使用1/z进行深度测试
+                    if (onePreZ >= _zBuff[yIndex, xIndex])//使用1/z进行深度测试
                     {//通过测试
                         float w = 1 / onePreZ;
-                        _zBuffer[yIndex, xIndex] = onePreZ;
+                        _zBuff[yIndex, xIndex] = onePreZ;
                         //uv 插值，求纹理颜色
                         float u = MathUntil.Lerp(left.u, right.u, lerpFactor) * w * (_texture.Width - 1);
                         float v = MathUntil.Lerp(left.v, right.v, lerpFactor) * w * (_texture.Height - 1);
@@ -446,23 +448,23 @@ namespace MyTiny3D
                             if (RenderMode.Textured == _currentMode)
                             {
                                 RenderData.Color finalColor = texColor * lightColor;
-                                _frameBuffer.SetPixel(xIndex, yIndex, finalColor.TransFormToSystemColor());
+                                _frameBuff.SetPixel(xIndex, yIndex, finalColor.TransFormToSystemColor());
                             }
                             else if (RenderMode.VertexColor == _currentMode)
                             {
                                 RenderData.Color finalColor = vertColor * lightColor;
-                                _frameBuffer.SetPixel(xIndex, yIndex, finalColor.TransFormToSystemColor());
+                                _frameBuff.SetPixel(xIndex, yIndex, finalColor.TransFormToSystemColor());
                             }
                         }
                         else
                         {
                             if (RenderMode.Textured == _currentMode)
                             {
-                                _frameBuffer.SetPixel(xIndex, yIndex, texColor.TransFormToSystemColor());
+                                _frameBuff.SetPixel(xIndex, yIndex, texColor.TransFormToSystemColor());
                             }
                             else if (RenderMode.VertexColor == _currentMode)
                             {
-                                _frameBuffer.SetPixel(xIndex, yIndex, vertColor.TransFormToSystemColor());
+                                _frameBuff.SetPixel(xIndex, yIndex, vertColor.TransFormToSystemColor());
                             }
                         }
                     }
@@ -472,11 +474,12 @@ namespace MyTiny3D
         }
 
         /// <summary>
-        /// 使用bresenham算法绘制直线
+        /// 绘制直线，使用bresenham算法
         /// </summary>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
-        private void BresenhamDrawLine(Vertex p1, Vertex p2) {
+        private void BresenhamDrawLine(Vertex p1, Vertex p2)
+        {
             int x = (int)(System.Math.Round(p1.point.x, MidpointRounding.AwayFromZero));
             int y = (int)(System.Math.Round(p1.point.y, MidpointRounding.AwayFromZero));
             int dx = (int)(System.Math.Round(p2.point.x - p1.point.x, MidpointRounding.AwayFromZero));
@@ -512,7 +515,7 @@ namespace MyTiny3D
                 int error = dy2 - dx;
                 for (int i = 0; i <= dx; i++)
                 {
-                    _frameBuffer.SetPixel(x, y, System.Drawing.Color.White);
+                    _frameBuff.SetPixel(x, y, System.Drawing.Color.White);
                     if (error >= 0)
                     {
                         error -= dx2;
@@ -520,6 +523,7 @@ namespace MyTiny3D
                     }
                     error += dy2;
                     x += stepx;
+
                 }
             }
             else
@@ -527,7 +531,7 @@ namespace MyTiny3D
                 int error = dx2 - dy;
                 for (int i = 0; i <= dy; i++)
                 {
-                    _frameBuffer.SetPixel(x, y, System.Drawing.Color.White);
+                    _frameBuff.SetPixel(x, y, System.Drawing.Color.White);
                     if (error >= 0)
                     {
                         error -= dy2;
@@ -535,8 +539,10 @@ namespace MyTiny3D
                     }
                     error += dx2;
                     y += stepy;
+
                 }
             }
+
         }
 
         /// <summary>
@@ -632,7 +638,7 @@ namespace MyTiny3D
         /// </summary>
         void clearBuff() {
             _frameG1.Clear(System.Drawing.Color.Black);
-            Array.Clear(_zBuffer, 0, _zBuffer.Length);
+            Array.Clear(_zBuff, 0, _zBuff.Length);
         }
 
         /// <summary>
