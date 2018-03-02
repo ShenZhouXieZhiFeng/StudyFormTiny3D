@@ -33,34 +33,42 @@ namespace MyTiny3D
 
         public SoftRendererDemo()
         {
+            //初始化窗体
             InitializeComponent();
-
             try
             {
                 //载入贴图
                 Image img = Image.FromFile("../../Texture/texture.jpg");
+                //转换成位图
                 _texture = new Bitmap(img, 256, 256);
             }
             catch (Exception) {
                 _texture = new Bitmap(256, 256);
                 initTexture();
             }
-
-            _currentMode = RenderMode.Wireframe;
+            //设置渲染模式
+            _currentMode = RenderMode.Textured;
+            //设置灯光开闭
             _lightMode = LightMode.OFF;
-            _textureFilterMode = TextureFilterMode.Bilinear;
+            //设置采样方式
+            _textureFilterMode = TextureFilterMode.Point;
 
+            //初始化帧缓冲
             _frameBuff = new Bitmap(this.MaximumSize.Width, this.MaximumSize.Height);
             _frameG1 = Graphics.FromImage(_frameBuff);
             _zBuff = new float[this.MaximumSize.Height, this.MaximumSize.Width];
+            //环境光颜色
             _ambientColor = new RenderData.Color(1, 1, 1);
 
+            //加载数据
             _mesh = new Mesh(CubeTestData.pointList, CubeTestData.indexs, CubeTestData.uvs, CubeTestData.vertColors, CubeTestData.norlmas, CubeTestData.mat);
 
+            //光源
             Vector3D lightPos = new Vector3D(50, 0, 0);
             RenderData.Color lightColor = new RenderData.Color(1, 1, 1);
             _light = new Light(lightPos, lightColor);
 
+            //相机
             Vector3D cameraPos = new Vector3D(0, 0, 0, 1);
             Vector3D cameraLookAt = new Vector3D(0, 0, 1, 1);
             Vector3D cameraUp = new Vector3D(0, 1, 0, 0);
@@ -70,6 +78,7 @@ namespace MyTiny3D
             float cameraZf = 500f;
             _camera = new Camera(cameraPos, cameraLookAt, cameraUp, cameraFov, cameraAspect, cameraZn, cameraZf);
 
+            //定时刷新任务
             System.Timers.Timer mainTimer = new System.Timers.Timer(1000 / 60f);
             mainTimer.Elapsed += new ElapsedEventHandler(Tick);
             mainTimer.AutoReset = true;
@@ -93,6 +102,7 @@ namespace MyTiny3D
                 Matrix4x4 v = MathUntil.GetView(_camera.pos, _camera.lookAt, _camera.up);
                 //投影矩阵
                 Matrix4x4 p = MathUntil.GetProjection(_camera.fov, _camera.aspect, _camera.zn, _camera.zf);
+
                 Draw(m,v,p);
 
                 if (_frameG2 == null) {
@@ -104,6 +114,7 @@ namespace MyTiny3D
             }
         }
 
+        //绘制
         private void Draw(Matrix4x4 m, Matrix4x4 v, Matrix4x4 p) {
             _showTrisCount = 0;
             for (int i = 0; i + 2 < _mesh.vertices.Length; i += 3) {

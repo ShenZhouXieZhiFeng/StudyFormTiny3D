@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyTiny3D", "MyTiny3D\MyTiny3D.csproj", "{7AD755BE-D52D-4089-9B2E-68D2F0929753}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftRenderer", "..\..\SimpleSoftwareRenderer\SoftRenderer\SoftRenderer.csproj", "{10E7223C-35D4-4642-89D0-C0AEB15453C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{7AD755BE-D52D-4089-9B2E-68D2F0929753}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AD755BE-D52D-4089-9B2E-68D2F0929753}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AD755BE-D52D-4089-9B2E-68D2F0929753}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10E7223C-35D4-4642-89D0-C0AEB15453C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10E7223C-35D4-4642-89D0-C0AEB15453C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10E7223C-35D4-4642-89D0-C0AEB15453C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10E7223C-35D4-4642-89D0-C0AEB15453C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

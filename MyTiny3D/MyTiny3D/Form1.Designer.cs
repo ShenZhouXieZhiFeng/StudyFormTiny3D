@@ -41,7 +41,6 @@
             this.Name = "StoneSoftRenderer";
             this.Text = "StoneSoftRenderer";
             this.ResumeLayout(false);
-
         }
 
         #endregion

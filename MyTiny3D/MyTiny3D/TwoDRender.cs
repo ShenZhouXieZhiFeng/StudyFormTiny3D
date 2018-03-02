@@ -48,16 +48,45 @@ namespace MyTiny3D
             //for (int i = 0; i < _points.Length; i++) {
             //    _frameBuff.SetPixel((int)_points[i].x, (int)_points[i].y, Color.White);
             //}
-            drawLine(new Point2D(5, 20), new Point2D(30, 50), Color.White);
+            drawLine2(new Point(1, 1), new Point(100, 10), Color.White);
         }
 
         /// <summary>
-        /// 根据起点和终点的坐标画直线
+        /// 直接画线法，效率低
         /// </summary>
-        void drawLine(Point2D start,Point2D end,Color col) {
-            for (int i = (int)start.x; i < (int)end.x; i++) {
-                for (int j = (int)start.y; j < (int)end.y; j++) {
-                    _frameBuff.SetPixel(i, j, col);
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <param name="col"></param>
+        void drawLine1(Point start, Point end, Color col) {
+            int dx = end.X - start.X;
+            int dy = end.Y - start.Y;
+            int stepY = dy / dx;
+            for (int i = start.X; i < end.X; i++)
+            {
+                _frameBuff.SetPixel(i, i * stepY, col);
+            }
+        }
+
+        /// <summary>
+        /// Bresenham算法画线
+        /// </summary>
+        void drawLine2(Point start, Point end,Color col) {
+            int x, y, dx, dy, d;
+            y = start.Y;
+            dx = end.X - start.X;
+            dy = end.Y - start.Y;
+            d = 2 * dy - dx;
+            for (x = start.X; x < end.X; x++)
+            {
+                _frameBuff.SetPixel(x, y, col);
+                if (d < 0)
+                {
+                    d += 2 * dy;
+                }
+                else
+                {
+                    y++;
+                    d += 2 * dy - 2 * dx;
                 }
             }
         }
